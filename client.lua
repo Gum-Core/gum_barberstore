@@ -175,7 +175,10 @@ Citizen.CreateThread(function()
                                     end
                                     
                                     Citizen.InvokeNative(0x322BFDEA666E2B0E, PlayerPedId(), v["BarberSpot"][1], v["BarberSpot"][2], v["BarberSpot"][3], 2.0, -1, 1, 1, 1, 1)
-                                    Citizen.Wait(2000)
+                                    Citizen.Wait(8000)
+                                    SetGameplayCamRelativeHeading(0.0, 1.0)
+                                    SetGameplayCamRelativePitch(0.0, 1.0)
+                                    
                                     SendNUIMessage({
                                         type = "barber_open",
                                         status = true,

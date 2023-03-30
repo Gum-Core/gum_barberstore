@@ -24,5 +24,6 @@ AddEventHandler( 'gum_barberstore:save_skin', function(table_skin, full_price)
 	if full_price <= money then
 		Character.removeCurrency(_source, 0, full_price)
 		Character.buySkinPlayer(_source, table_skin)
+		TriggerClientEvent('gum_character:saveBarberAction', _source, table_skin)
 	end
 end)

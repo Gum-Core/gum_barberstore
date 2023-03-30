@@ -60,6 +60,9 @@ local HairAccTable = {}
 local Skin_Table_Backup = {}
 local pricing_table = {}
 local price = 0.0
+local hairstable_texture = 0
+local hairstable_color = 0
+local hairstable_opacity = 0.0
 
 RegisterNetEvent("gum:SelectedCharacter")
 AddEventHandler("gum:SelectedCharacter", function(charid)
@@ -175,10 +178,7 @@ Citizen.CreateThread(function()
                                     end
                                     
                                     Citizen.InvokeNative(0x322BFDEA666E2B0E, PlayerPedId(), v["BarberSpot"][1], v["BarberSpot"][2], v["BarberSpot"][3], 2.0, -1, 1, 1, 1, 1)
-                                    Citizen.Wait(8000)
-                                    SetGameplayCamRelativeHeading(0.0, 1.0)
-                                    SetGameplayCamRelativePitch(0.0, 1.0)
-                                    
+                                    Citizen.Wait(2000)
                                     SendNUIMessage({
                                         type = "barber_open",
                                         status = true,
@@ -251,12 +251,15 @@ Citizen.CreateThread(function()
         Citizen.Wait(optimalize)
     end
 end)
+
 RegisterNUICallback('left_key', function(data, cb)
     SetGameplayCamRelativeHeading(GetGameplayCamRelativeHeading()-6.0, 1.0)
 end)
+
 RegisterNUICallback('right_key', function(data, cb)
     SetGameplayCamRelativeHeading(GetGameplayCamRelativeHeading()+6.0, 1.0)
 end)
+
 RegisterNUICallback('close', function(data, cb)
     SetNuiFocus(false, false)
     SendNUIMessage({type = "barber_maker", status = false})
@@ -352,6 +355,19 @@ RegisterNUICallback('send_change', function(data, cb)
                 end
             end
         end
+
+    elseif data.id == "HAIRSSTABLE_TEXTURE" then
+        hairstable_texture = tonumber(data.value)
+        TriggerEvent("gum_characters:colors", "hair",1, 1,1,0,0,1.0,0,1,hairstable_color,0,0,1,hairstable_opacity/10)
+        Skin_Table["hairstable_texture"] = 1
+    elseif data.id == "HAIRSSTABLE_OPACITY" then
+        hairstable_opacity = tonumber(data.value)
+        TriggerEvent("gum_characters:colors", "hair",1, 1,1,0,0,1.0,0,1,hairstable_color,0,0,hairstable_texture,hairstable_opacity/10)
+        Skin_Table["hairstable_opacity"] = hairstable_opacity/10
+    elseif data.id == "HAIRSSTABLE_COLOR" then
+        hairstable_color = tonumber(data.value)
+        TriggerEvent("gum_characters:colors", "hair",1, 1,1,0,0,1.0,0,1,hairstable_color,0,0,hairstable_texture,hairstable_opacity/10)
+        Skin_Table["hairstable_color"] = hairstable_color
     elseif data.id == "BEARDSSTABLE_COLOR" then
         beardstabble_color_1 = tonumber(data.value)
         TriggerEvent("gum_characters:colors", "beardstabble",beardstabble_enable, beardstabble_texture,1,0,0,1.0,0,1,beardstabble_color_1,0,0,1,beardstabble_opacity/10)
